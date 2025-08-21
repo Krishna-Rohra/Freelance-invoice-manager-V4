@@ -1,0 +1,63 @@
+<div class="form-container">
+  <div class="form-card">
+    <div class="form-header">
+      <h2>Add New Client</h2>
+      <p>Enter the client's information below</p>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" #clientForm="ngForm">
+      <div class="form-group">
+        <label for="name">Name *</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          [(ngModel)]="client.name"
+          required
+          class="form-control"
+          placeholder="Enter client name"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email *</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          [(ngModel)]="client.email"
+          required
+          class="form-control"
+          placeholder="Enter client email"
+        >
+      </div>
+
+      <div *ngIf="error" class="error-message">
+        {{ error }}
+      </div>
+
+      <div *ngIf="success" class="success-message">
+        Client created successfully! Redirecting...
+      </div>
+
+      <div class="form-actions">
+        <button
+          type="button"
+          class="btn-secondary"
+          (click)="onCancel()"
+          [disabled]="loading"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="btn-primary"
+          [disabled]="loading || !client.name.trim() || !client.email.trim()"
+        >
+          <span *ngIf="loading">Creating...</span>
+          <span *ngIf="!loading">Create Client</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

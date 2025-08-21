@@ -1,0 +1,81 @@
+<div class="service-list-container">
+  <div class="header">
+    <h2>Services</h2>
+    <div class="header-actions">
+      <button class="btn-secondary" (click)="downloadPdf()">Download PDF</button>
+      <button class="btn-primary" (click)="addNewService()">Add New Service</button>
+    </div>
+  </div>
+
+  <div class="filters">
+    <div class="filter-group">
+      <label for="clientFilter">Filter by Client:</label>
+      <select id="clientFilter" (change)="onClientChange($event)" class="form-control">
+        <option value="">All Clients</option>
+        <option *ngFor="let client of clients" [value]="client.id">
+          {{ client.name }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div class="content">
+    <div *ngIf="loading" class="loading">
+      <p>Loading services...</p>
+    </div>
+
+    <div *ngIf="error" class="error">
+      <p>{{ error }}</p>
+      <button class="btn-secondary" (click)="loadServices()">Retry</button>
+    </div>
+
+    <div *ngIf="!loading && !error && services.length === 0" class="empty-state">
+      <p>No services found. Add your first service to get started!</p>
+    </div>
+
+    <div *ngIf="!loading && !error && services.length > 0" class="services-content">
+      <div class="services-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Client</th>
+              <th>Description</th>
+              <th>Hours</th>
+              <th>Rate</th>
+              <th>Date</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let service of services">
+              <td>{{ service.client.name }}</td>
+              <td>{{ service.description }}</td>
+              <td>{{ service.hours }}</td>
+              <td>${{ service.rate }}/hr</td>
+              <td>{{ service.date | date:'shortDate' }}</td>
+              <td class="total">${{ service.hours * service.rate | number:'1.2-2' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="summary">
+        <div class="summary-card">
+          <h3>Summary</h3>
+          <div class="summary-item">
+            <span>Total Services:</span>
+            <span>{{ services.length }}</span>
+          </div>
+          <div class="summary-item">
+            <span>Total Hours:</span>
+            <span>{{ totalHours | number:'1.2-2' }}</span>
+          </div>
+          <div class="summary-item total-amount">
+            <span>Total Amount:</span>
+            <span>${{ totalAmount | number:'1.2-2' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
